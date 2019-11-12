@@ -1,0 +1,25 @@
+---
+title: "About"
+author: "Richard M. Palmer"
+date: "11/11/2019"
+output: html_document
+---
+
+![This is me](RichardSailing.jpg)
+
+# I work at Shell Oil
+
+# I served in the Army from 1985 to 1989.
+
+# My Education
+
+## BSEE Rice 1985
+## MSEE University of Texas 1995
+
+# My interests
+
+## Sailing
+![Sailing](SailingSomerville.jpg)
+
+## Scuba
+![Scuba](scuba_rick.jpg)

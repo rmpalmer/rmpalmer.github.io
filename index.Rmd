@@ -5,6 +5,7 @@ date: "11/11/2019"
 output: html_document
 ---
 
-# This is my web site
+# This is a web site created for DS6306, Doing Data Science in the MSDS program at Southern Methodist University.  Pony Up!
 
-## DS6306 Doing Data Science
+# Other tabs on this web site document Data Science analyses that I have done.
+
