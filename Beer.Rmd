@@ -1,0 +1,60 @@
+---
+title: "Beer"
+author: "Richard M. Palmer"
+date: "11/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE}
+library(shiny)
+
+
+
+ui <- fluidPage(
+  titlePanel("Beer Analysis"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(inputId="bins",
+                  label="Number of bins:",
+                  min=1,
+                  max=50,
+                  value=30),
+      selectInput(inputId="select",label=h3("IBU or ABV"),
+                  choices=list("IBU" = "ibu", "ABV" = "abv"),
+                  selected=1),
+                  hr(),
+                  fluidRow(column(3,verbatimTextOutput("value")))
+    ),
+    mainPanel(
+      plotOutput(outputId="distPlot")
+    )
+  )
+
+)
+
+server <- function(input,output) {
+  output$distPlot <- renderPlot({
+    if (input$select == "ibu")
+    {
+    x <- faithful$waiting
+    bins <- seq(min(x),max(x),length.out=input$bins+1)
+    hist(x,breaks=bins,col="#75AADB",border="white",
+         xlab="IBU",
+         main="Histogram of IBU")
+    }
+    if (input$select == "abv")
+    {
+    x <- faithful$eruptions
+    bins <- seq(min(x),max(x),length.out=input$bins+1)
+    hist(x,breaks=bins,col="#75AADB",border="white",
+         xlab="ABV",
+         main="Histogram of ABV")
+    }
+  }
+)
+
+```

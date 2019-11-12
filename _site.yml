@@ -8,3 +8,5 @@ navbar:
       href: about.html
     - text: "Beer Study"
       href: FinalReport.html
+    - text: "Interactive Beer"
+      href: Beer.html
