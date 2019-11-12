@@ -11,8 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r echo=FALSE}
 library(shiny)
+library(tidyverse)
 
-
+beers <- read.csv('Beers.csv')
 
 ui <- fluidPage(
   titlePanel("Beer Analysis"),
@@ -40,7 +41,7 @@ server <- function(input,output) {
   output$distPlot <- renderPlot({
     if (input$select == "ibu")
     {
-    x <- faithful$waiting
+    x <- beers$IBU
     bins <- seq(min(x),max(x),length.out=input$bins+1)
     hist(x,breaks=bins,col="#75AADB",border="white",
          xlab="IBU",
@@ -48,7 +49,7 @@ server <- function(input,output) {
     }
     if (input$select == "abv")
     {
-    x <- faithful$eruptions
+    x <- beers$ABV
     bins <- seq(min(x),max(x),length.out=input$bins+1)
     hist(x,breaks=bins,col="#75AADB",border="white",
          xlab="ABV",

@@ -7,9 +7,7 @@ output: html_document
 
 ![This is me](RichardSailing.jpg)
 
-# I work at Shell Oil
-
-# I served in the Army from 1985 to 1989.
+# I am employed at Shell Oil, where I work in seismic data processing.
 
 # My Education
 
