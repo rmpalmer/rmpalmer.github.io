@@ -5,4 +5,4 @@ date: "11/11/2019"
 output: html_document
 ---
 
-[Explore Beer](https://richardmpalmer.shinyapps.io/Wyoming/)
+[Explore Beer](https://richardmpalmer.shinyapps.io/BeerApp/)

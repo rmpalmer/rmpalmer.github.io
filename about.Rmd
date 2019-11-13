@@ -7,17 +7,17 @@ output: html_document
 
 ![This is me](RichardSailing.jpg)
 
-# I am employed at Shell Oil, where I work in seismic data processing.
+# I am employed at Shell Oil, where I work in seismic data processing.  
 
-# My Education
+# My Education  
 
-## BSEE Rice 1985
-## MSEE University of Texas 1995
+## BSEE Rice 1985  
+## MSEE University of Texas 1995  
 
-# My interests
+# My interests  
 
-## Sailing
+## Sailing  
 ![Sailing](SailingSomerville.jpg)
 
-## Scuba
+## Scuba  
 ![Scuba](scuba_rick.jpg)
