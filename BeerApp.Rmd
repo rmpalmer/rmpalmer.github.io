@@ -1,0 +1,70 @@
+---
+title: "Interactive Beer"
+author: "Richard M. Palmer"
+date: "11/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo = FALSE}
+library(shiny)
+
+beers <- read.csv("Beers.csv")
+breweries <- read.csv("Breweries.csv")
+
+ui <- fluidPage(
+  titlePanel("Beer"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(inputId="which_plot",
+                  label="What type of Plot?",
+                  choices=list("Histogram"="hist","BoxPlot"="box"),
+                  selected=1),
+      sliderInput(inputId="bins",
+                  label="Number of bins",
+                  min=1,
+                  max=50,
+                  value=25),
+      selectInput(inputId="which_var",
+                  label="Which Variable?",
+                  choices=list("ABV"="abv","IBU"="ibu"),
+                  selected=1),
+      actionButton(inputId="load","Load Data")
+    ),
+    mainPanel(
+      plotOutput(outputId="distPlot")
+    )
+  )
+)
+
+server <- function(input,output) {
+  observeEvent(input$load,{
+    beers <- read.csv("Beers.csv")
+    breweries <- read.csv("Breweries.csv")
+    message("Data Loaded")
+  })
+  output$distPlot <- renderPlot({
+    if (input$which_var == "abv")
+    {
+      x <- beers$ABV
+    }
+    if (input$which_var == "ibu")
+    {
+      x <- beers$IBU
+    }
+    if (input$which_plot == "hist")
+    {
+    hist(x,breaks=input$bins,col="#75AADB",border="white",
+         xlab="x quantity",
+         main="Histogram")
+    }
+  }
+)
+}
+
+shinyApp(ui,server)
+
+```
