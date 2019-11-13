@@ -18,7 +18,7 @@ breweries_raw <- read.csv('Breweries.csv') %>% rename(Brewery_name = Name)
 
 # join on Brewery ID and sort the result by Beer ID.
 beers <- inner_join(beers_raw, breweries_raw,by='Brew_ID') %>% arrange(Beer_ID)
-states <- levels(merged$State)
+states <- levels(beers$State)
 
 ui <- fluidPage(
   titlePanel("Beer"),
@@ -81,7 +81,7 @@ server <- function(input,output) {
     }
     if (input$which_plot == "box")
     {
-      boxplot(x,main=paste("Distribution of",input$which_var))
+      boxplot(x,main=paste("Distribution of",input$which_var,modifier))
     }
   })
   output$scatPlot <- renderPlot({
