@@ -35,7 +35,8 @@ ui <- fluidPage(
       actionButton(inputId="load","Load Data")
     ),
     mainPanel(
-      plotOutput(outputId="distPlot")
+      plotOutput(outputId="distPlot"),
+      plotOutput(outputId="scatPlot")
     )
   )
 )
@@ -58,11 +59,17 @@ server <- function(input,output) {
     if (input$which_plot == "hist")
     {
     hist(x,breaks=input$bins,col="#75AADB",border="white",
-         xlab="x quantity",
+         xlab=input$which_var,
          main="Histogram")
     }
-  }
-)
+    if (input$which_plot == "box")
+    {
+      boxplot(x,main=paste("Distribution of",input$which_var))
+    }
+  })
+  output$scatPlot <- renderPlot({
+    plot(x=beers$IBU,y=beers$ABV,xlab="IBU",ylab="ABV",main="Bitterness vs Alchohol")
+  })
 }
 
 shinyApp(ui,server)
