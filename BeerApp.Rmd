@@ -32,6 +32,7 @@ ui <- fluidPage(
                   label="Which Variable?",
                   choices=list("ABV"="abv","IBU"="ibu"),
                   selected=1),
+      checkboxInput(inputId="trend_line","Draw Regression Line",FALSE),
       actionButton(inputId="load","Load Data")
     ),
     mainPanel(
@@ -68,7 +69,12 @@ server <- function(input,output) {
     }
   })
   output$scatPlot <- renderPlot({
-    plot(x=beers$IBU,y=beers$ABV,xlab="IBU",ylab="ABV",main="Bitterness vs Alchohol")
+    plot(x=beers$ABV,y=beers$IBU,xlab="ABV",ylab="IBU",main="Bitterness vs Alchohol")
+    if (input$trend_line) 
+    {
+      reg1 <- lm(IBU~ABV,data=beers)
+      abline(reg1)
+    }
   })
 }
 
