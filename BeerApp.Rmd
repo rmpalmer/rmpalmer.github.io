@@ -11,14 +11,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r echo = FALSE}
 library(shiny)
+library(tidyverse)
 
-beers <- read.csv("Beers.csv")
-breweries <- read.csv("Breweries.csv")
+beers_raw <- read.csv('Beers.csv') %>% rename(Brew_ID = Brewery_id, Beer_name = Name)
+breweries_raw <- read.csv('Breweries.csv') %>% rename(Brewery_name = Name)
+
+# join on Brewery ID and sort the result by Beer ID.
+beers <- inner_join(beers_raw, breweries_raw,by='Brew_ID') %>% arrange(Beer_ID)
+states <- levels(merged$State)
 
 ui <- fluidPage(
   titlePanel("Beer"),
   sidebarLayout(
     sidebarPanel(
+      tags$div(class="header",checked=NA,tags$p("About Plot 1")),
       selectInput(inputId="which_plot",
                   label="What type of Plot?",
                   choices=list("Histogram"="hist","BoxPlot"="box"),
@@ -32,8 +38,16 @@ ui <- fluidPage(
                   label="Which Variable?",
                   choices=list("ABV"="abv","IBU"="ibu"),
                   selected=1),
+      checkboxInput(inputId="hist_filter","Filter by State",FALSE),
+      selectInput(inputId="hist_state",
+                  label="Which State?",
+                  choices=states),
+      tags$div(class="header",checked=NA,tags$p("About Plot 2")),
       checkboxInput(inputId="trend_line","Draw Regression Line",FALSE),
-      actionButton(inputId="load","Load Data")
+      checkboxInput(inputId="scat_filter","Filter by State",FALSE),
+      selectInput(inputId="scat_state",
+                  label="Which State?",
+                  choices=states)
     ),
     mainPanel(
       plotOutput(outputId="distPlot"),
@@ -43,25 +57,27 @@ ui <- fluidPage(
 )
 
 server <- function(input,output) {
-  observeEvent(input$load,{
-    beers <- read.csv("Beers.csv")
-    breweries <- read.csv("Breweries.csv")
-    message("Data Loaded")
-  })
   output$distPlot <- renderPlot({
+    if (input$hist_filter) {
+      hist_data <- subset(beers,State == input$hist_state)
+      modifier <- paste("in",input$hist_state)
+    } else {
+      hist_data <- beers
+      modifier <- "all states"
+    }
     if (input$which_var == "abv")
     {
-      x <- beers$ABV
+      x <- hist_data$ABV
     }
     if (input$which_var == "ibu")
     {
-      x <- beers$IBU
+      x <- hist_data$IBU
     }
     if (input$which_plot == "hist")
     {
     hist(x,breaks=input$bins,col="#75AADB",border="white",
          xlab=input$which_var,
-         main="Histogram")
+         main=(paste("Histogram",modifier)))
     }
     if (input$which_plot == "box")
     {
@@ -69,10 +85,21 @@ server <- function(input,output) {
     }
   })
   output$scatPlot <- renderPlot({
-    plot(x=beers$ABV,y=beers$IBU,xlab="ABV",ylab="IBU",main="Bitterness vs Alchohol")
+    if (input$scat_filter) {
+      scat_data <- subset(beers,State == input$scat_state)
+      modifier <- paste("in",input$scat_state)
+    } else {
+      scat_data <- beers
+      modifier <- "all states"
+    }
+    plot(x=scat_data$ABV,
+         y=scat_data$IBU,
+         xlab="ABV",
+         ylab="IBU",
+         main=paste("Bitterness vs Alchohol",modifier))
     if (input$trend_line) 
     {
-      reg1 <- lm(IBU~ABV,data=beers)
+      reg1 <- lm(IBU~ABV,data=scat_data)
       abline(reg1)
     }
   })
